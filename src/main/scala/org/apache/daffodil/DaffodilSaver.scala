@@ -22,7 +22,6 @@ import java.nio.channels.FileChannel
 import java.nio.channels.WritableByteChannel
 import java.nio.file.Paths
 import java.nio.file.StandardOpenOption
-import scala.collection.JavaConverters._
 
 // We need a special customized classpath, and the easiest way to do that within SBT is by
 // forking. But the only thing that can save a parser via forking is the Daffodil CLI, which we
@@ -100,7 +99,7 @@ object DaffodilSaver {
     val diagnosticToString = diagnosticClass.getMethod("toString")
 
     def printDiagnostics(diags: java.util.List[Object]): Unit = {
-      diags.asScala.foreach { d =>
+      diags.forEach { d =>
         // val msg = d.toString
         val msg = diagnosticToString.invoke(d).asInstanceOf[String]
         // val isError = d.isError
