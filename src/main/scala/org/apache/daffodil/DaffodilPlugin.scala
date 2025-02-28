@@ -357,8 +357,7 @@ object DaffodilPlugin extends AutoPlugin {
       // get all dependencies and resources of this project
       val projectClasspath = (Compile / fullClasspath).value.files
 
-      // need to dropRight to remove the dollar sign in the object name
-      val mainClass = DaffodilSaver.getClass.getCanonicalName.dropRight(1)
+      val mainClass = classOf[DaffodilSaver].getCanonicalName
 
       // schema compilation can be expensive, so we only want to fork and compile the schema if
       // any of the project classpath files change
