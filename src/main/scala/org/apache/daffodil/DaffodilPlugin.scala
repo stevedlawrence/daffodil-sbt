@@ -141,17 +141,17 @@ object DaffodilPlugin extends AutoPlugin {
         ">=11 <17" -> "2.12.4",
         "     <11" -> "2.12.0"
       )
-      val jdkMinScala213VersionMapping = Map(
-        ">=23    " -> "2.13.15",
-        ">=22 <23" -> "2.13.13",
-        ">=21 <22" -> "2.13.11",
-        ">=17 <21" -> "2.13.6",
-        ">=11 <17" -> "2.13.0",
-        "     <11" -> "2.13.0"
+      val jdkMinScala3VersionMapping = Map(
+        ">=23    " -> "3.3.5",
+        ">=22 <23" -> "3.3.4",
+        ">=21 <22" -> "3.3.1",
+        ">=17 <21" -> "3.3.0",
+        ">=11 <17" -> "3.3.0",
+        "     <11" -> "3.3.0"
       )
 
       val daffodilScalaVersionMapping = Map(
-        ">=4.0.0       " -> "2.13.16",
+        ">=4.0.0       " -> "3.3.5",
         ">=3.9.0 <4.0.0" -> "2.12.20",
         ">=3.7.0 <3.9.0" -> "2.12.19",
         ">=3.5.0 <3.7.0" -> "2.12.18",
@@ -167,7 +167,7 @@ object DaffodilPlugin extends AutoPlugin {
         if (SemanticSelector("<4.0.0").matches(VersionNumber(daffodilVersion.value))) {
           filterVersions(Properties.javaSpecVersion, jdkMinScala212VersionMapping).head
         } else {
-          filterVersions(Properties.javaSpecVersion, jdkMinScala213VersionMapping).head
+          filterVersions(Properties.javaSpecVersion, jdkMinScala3VersionMapping).head
         }
 
       if (SemanticSelector("<" + jdkScalaVersion).matches(VersionNumber(dafScalaVersion))) {
@@ -310,10 +310,10 @@ object DaffodilPlugin extends AutoPlugin {
         // the specific version of scala used for the binDaffodilVersion. We can do this by
         // defining the dependency with a "constant" cross version
         val crossVersion =
-          if (SemanticSelector("<4.0.0").matches(VersionNumber(binDaffodilVersion))) {
+          if (SemanticSelector("<=3.10.0").matches(VersionNumber(binDaffodilVersion))) {
             CrossVersion.constant("2.12")
           } else {
-            CrossVersion.constant("2.13")
+            CrossVersion.constant("3")
           }
         val dafDep = ("org.apache.daffodil" % "daffodil-japi" % binDaffodilVersion % cfg)
           .withCrossVersion(crossVersion)
