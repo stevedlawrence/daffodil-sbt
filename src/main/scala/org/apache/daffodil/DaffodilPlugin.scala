@@ -79,6 +79,17 @@ object DaffodilPlugin extends AutoPlugin {
     }
   }
 
+  /**
+   * With the way SemanticVersion works by default it treats SNAPSHOT versions
+   * as less than non-SNAPSHOT versions, ie 4.0.0-SNAPSHOT < 4.0.0.  That makes
+   * the logic a bit more confusing, so this implicit will cause SNAPSHOT
+   * versions to be treated like non-SNAPSHOT as far as determining the correct
+   * Scala/Daffodil version to use.
+   */
+  implicit def normalVersionNumber(s: String): VersionNumber = {
+    VersionNumber(s.takeWhile(_ != '-'))
+  }
+
   import autoImport._
 
   /**
@@ -151,20 +162,20 @@ object DaffodilPlugin extends AutoPlugin {
       )
 
       val daffodilScalaVersionMapping = Map(
-        ">3.10.0         " -> "3.3.5",
-        ">=3.9.0 <=3.10.0" -> "2.12.20",
-        ">=3.7.0 <3.9.0  " -> "2.12.19",
-        ">=3.5.0 <3.7.0  " -> "2.12.18",
-        ">=3.4.0 <3.5.0  " -> "2.12.17",
-        ">=3.2.0 <3.4.0  " -> "2.12.15",
-        ">=3.1.0 <3.2.0  " -> "2.12.13",
-        "        <3.1.0  " -> "2.12.11"
+        ">=4.0.0         " -> "3.3.5",
+        ">=3.9.0 <4.0.0" -> "2.12.20",
+        ">=3.7.0 <3.9.0" -> "2.12.19",
+        ">=3.5.0 <3.7.0" -> "2.12.18",
+        ">=3.4.0 <3.5.0" -> "2.12.17",
+        ">=3.2.0 <3.4.0" -> "2.12.15",
+        ">=3.1.0 <3.2.0" -> "2.12.13",
+        "        <3.1.0" -> "2.12.11"
       )
 
       val dafScalaVersion =
         filterVersions(daffodilVersion.value, daffodilScalaVersionMapping).head
       val jdkScalaVersion =
-        if (SemanticSelector("<=3.10.0").matches(VersionNumber(daffodilVersion.value))) {
+        if (SemanticSelector("<4.0.0").matches(daffodilVersion.value)) {
           filterVersions(Properties.javaSpecVersion, jdkMinScala212VersionMapping).head
         } else {
           filterVersions(Properties.javaSpecVersion, jdkMinScala3VersionMapping).head
@@ -310,7 +321,7 @@ object DaffodilPlugin extends AutoPlugin {
         // the specific version of scala used for the binDaffodilVersion. We can do this by
         // defining the dependency with a "constant" cross version
         val crossVersion =
-          if (SemanticSelector("<=3.10.0").matches(VersionNumber(binDaffodilVersion))) {
+          if (SemanticSelector("<4.0.0").matches(binDaffodilVersion)) {
             CrossVersion.constant("2.12")
           } else {
             CrossVersion.constant("3")
