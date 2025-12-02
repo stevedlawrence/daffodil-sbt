@@ -105,17 +105,13 @@ lazy val utils = (projectMatrix in file("utils"))
       scalaBinaryVersion.value match {
         case "2.12" => {
           Seq(
-            // scala-steward:off
-            "org.apache.daffodil" %% "daffodil-japi" % "3.10.0" % "provided",
-            // scala-steward:on
+            "org.apache.daffodil" %% "daffodil-japi" % "3.10.0" % "provided", // scala-steward:off
             "org.scala-lang.modules" %% "scala-collection-compat" % "2.14.0"
           )
         }
         case "2.13" => {
           Seq(
-            // scala-steward:off
-            "org.apache.daffodil" %% "daffodil-japi" % "3.11.0" % "provided"
-            // scala-steward:on
+            "org.apache.daffodil" %% "daffodil-japi" % "3.11.0" % "provided" // scala-steward:off
           )
         }
         case "3" => {
@@ -126,4 +122,4 @@ lazy val utils = (projectMatrix in file("utils"))
       }
     }
   )
-  .jvmPlatform(scalaVersions = Seq("2.12.20", "2.13.16", "3.3.6"))
+  .jvmPlatform(scalaVersions = Seq("2.12.19", "2.13.16", "3.3.6"))
