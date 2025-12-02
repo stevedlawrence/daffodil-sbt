@@ -50,7 +50,7 @@ lazy val plugin = (project in file("."))
     name := "sbt-daffodil",
 
     // SBT plugin settings
-    scalaVersion := "2.12.19",
+    scalaVersion := "2.12.20",
     crossSbtVersions := Seq("1.8.0"),
     scriptedLaunchOpts ++= Seq(
       "-Xmx1024M",
@@ -126,4 +126,4 @@ lazy val utils = (projectMatrix in file("utils"))
       }
     }
   )
-  .jvmPlatform(scalaVersions = Seq("2.12.19", "2.13.16", "3.3.6"))
+  .jvmPlatform(scalaVersions = Seq("2.12.20", "2.13.16", "3.3.6"))
