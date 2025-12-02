@@ -23,7 +23,7 @@ val plugin = (project in file("plugin"))
     version := "0.1",
     organization := "com.example",
     daffodilVersion := "3.10.0",
-    daffodilBuildsCharset := true,
+    daffodilBuildsCharset := true
   )
   .daffodilProject(crossDaffodilVersions = Seq("3.1.0", "3.11.0"))
 
@@ -35,6 +35,6 @@ val schema = (project in file("schema"))
     daffodilVersion := "3.10.0",
     daffodilPluginDependencies := Seq(
       "com.example" % "test-plugin" % "0.1"
-    ),
+    )
   )
   .daffodilProject(crossDaffodilVersions = Seq("3.11.0", "4.0.0"))
